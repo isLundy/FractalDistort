@@ -1,5 +1,4 @@
 #! C:/Program Files/Nuke13.0v9/nuke-13.0.9.dll -nx
-version 13.0 v9
 Gizmo {
  inputs 2
  knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == \"transformspeed_checkbox\":\n    if n\['transformspeed_checkbox'].getValue() == True:\n        n\['transformspeed'].setEnabled(True)\n        n\['speedx'].setEnabled(True)\n        n\['speedy'].setEnabled(True)\n    else:\n        n\['transformspeed'].setEnabled(False)\n        n\['speedx'].setEnabled(False)\n        n\['speedy'].setEnabled(False)\n"
