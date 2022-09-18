@@ -1,17 +1,12 @@
-set cut_paste_input [stack 0]
+#! C:/Program Files/Nuke13.0v9/nuke-13.0.9.dll -nx
 version 13.0 v9
-push $cut_paste_input
-Group {
- name SimpleTurbulate
+Gizmo {
+ inputs 2
  knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == \"transformspeed_checkbox\":\n    if n\['transformspeed_checkbox'].getValue() == True:\n        n\['transformspeed'].setEnabled(True)\n        n\['speedx'].setEnabled(True)\n        n\['speedy'].setEnabled(True)\n    else:\n        n\['transformspeed'].setEnabled(False)\n        n\['speedx'].setEnabled(False)\n        n\['speedy'].setEnabled(False)\n"
  tile_color 0xff5204ff
  note_font_color 0xffffffff
- selected true
- xpos 49
- ypos -498
  addUserKnob {20 simpleturbulate l SimpleTurbulate}
- addUserKnob {26 title l " " T "<span style=\"font-size:18px\">SimpleTurbulate <sup>v1.0</sup></span><span style='font-size:32px;'>&#x1F334;</span><span style=\"font-size:18px\"> by Lundy Hu</span>"}
- addUserKnob {26 version l v1.0 -STARTLINE +INVISIBLE T "<span style='font-size:32px;'>&#x1F334;</span><b><span style=\"font-size:18px\"> by Lundy Hu</span></b>"}
+ addUserKnob {26 title l " " T "<span style=\"font-size:18px\">SimpleTurbulate <sup>v1.0</sup></span><span style='font-size:32px;'>&#x1F334;</span><b><span style=\"color:#7F7F7F\"> by Lundy Hu</span></b>"}
  addUserKnob {26 fractal l "<b><span style='color:#FF5204'>Fractal</span></b>"}
  addUserKnob {41 size l x/ysize T Noise1.size}
  addUserKnob {41 lacunarity l Detail T Noise1.lacunarity}
@@ -69,7 +64,7 @@ set N9be9ced0 [stack 0]
   size 100
   zoffset {{parent.seed+parent.speed*frame}}
   translate {{"parent.transformspeed_checkbox == 1? parent.speedx*frame:curve"} {"parent.transformspeed_checkbox == 1? parent.speedy*frame:curve"}}
-  center {960 540}
+  center {{Dot1.width/2} {Dot1.height/2}}
   name Noise1
   selected true
   xpos 303
