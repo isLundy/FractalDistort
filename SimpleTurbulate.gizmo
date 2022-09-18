@@ -1,0 +1,135 @@
+set cut_paste_input [stack 0]
+version 13.0 v9
+push $cut_paste_input
+Group {
+ name SimpleTurbulate
+ knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == \"transformspeed_checkbox\":\n    if n\['transformspeed_checkbox'].getValue() == True:\n        n\['transformspeed'].setEnabled(True)\n        n\['speedx'].setEnabled(True)\n        n\['speedy'].setEnabled(True)\n    else:\n        n\['transformspeed'].setEnabled(False)\n        n\['speedx'].setEnabled(False)\n        n\['speedy'].setEnabled(False)\n"
+ tile_color 0xff5204ff
+ note_font_color 0xffffffff
+ selected true
+ xpos 49
+ ypos -498
+ addUserKnob {20 simpleturbulate l SimpleTurbulate}
+ addUserKnob {26 title l " " T "<span style=\"font-size:18px\">SimpleTurbulate <sup>v1.0</sup></span><span style='font-size:32px;'>&#x1F334;</span><span style=\"font-size:18px\"> by Lundy Hu</span>"}
+ addUserKnob {26 version l v1.0 -STARTLINE +INVISIBLE T "<span style='font-size:32px;'>&#x1F334;</span><b><span style=\"font-size:18px\"> by Lundy Hu</span></b>"}
+ addUserKnob {26 fractal l "<b><span style='color:#FF5204'>Fractal</span></b>"}
+ addUserKnob {41 size l x/ysize T Noise1.size}
+ addUserKnob {41 lacunarity l Detail T Noise1.lacunarity}
+ addUserKnob {7 seed l Seed R 0 5}
+ addUserKnob {7 speed l Evolve R 0 0.5}
+ speed 0.02
+ addUserKnob {26 spacer_2 l "" +STARTLINE T " "}
+ addUserKnob {26 spacer_1 l "" +STARTLINE T " "}
+ addUserKnob {26 distort l "<b><span style='color:#FF5204'>Distort</span></b>"}
+ addUserKnob {7 scale l Scale R 0 200}
+ scale 50
+ addUserKnob {41 size_2 l Smooth T Blur2.size}
+ addUserKnob {26 spacer_3 l "" +STARTLINE T " "}
+ addUserKnob {20 transformspeedtap l "Transform Speed"}
+ addUserKnob {6 transformspeed_checkbox l " " +STARTLINE}
+ addUserKnob {26 transformspeed l "" -STARTLINE +DISABLED T "Transform Speed"}
+ addUserKnob {7 speedx l "Speed X" +DISABLED R -50 50}
+ addUserKnob {7 speedy l " Speed Y" -STARTLINE +DISABLED R -50 50}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -232
+  ypos -166
+  number 1
+ }
+ Invert {
+  name Invert1
+  xpos -232
+  ypos 360.125
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -53.66666667
+  ypos -166
+ }
+ Dot {
+  name Dot1
+  xpos -19.66666667
+  ypos -87.125
+ }
+set N9be9ced0 [stack 0]
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width {{Dot1.width}}
+  box_height {{Dot1.height}}
+  box_fixed true
+  name Reformat1
+  xpos 303
+  ypos -90.125
+ }
+ Noise {
+  size 100
+  zoffset {{parent.seed+parent.speed*frame}}
+  translate {{"parent.transformspeed_checkbox == 1? parent.speedx*frame:curve"} {"parent.transformspeed_checkbox == 1? parent.speedy*frame:curve"}}
+  center {960 540}
+  name Noise1
+  selected true
+  xpos 303
+  ypos -14.25
+ }
+ Grade {
+  channels rgba
+  white 2
+  add -0.5
+  black_clamp false
+  name Grade2
+  xpos 303
+  ypos 61.625
+ }
+ Blur {
+  name Blur2
+  label "\[value size]"
+  xpos 303
+  ypos 126.5
+ }
+push $N9be9ced0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy1
+  xpos 124.6666667
+  ypos 126.5
+ }
+ IDistort {
+  uv {forward.u -forward.v}
+  uv_scale {{parent.scale}}
+  name IDistort1
+  xpos 124.6666667
+  ypos 208.375
+ }
+ IDistort {
+  uv {-forward.u forward.v}
+  uv_scale {{parent.scale}}
+  name IDistort2
+  xpos 124.6666667
+  ypos 284.25
+ }
+ Dot {
+  name Dot3
+  xpos 158.6666667
+  ypos 368.125
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -53.66666667
+  ypos 360.125
+  disable {{"\[exists parent.input1]? 0:1"}}
+ }
+ Output {
+  name Output1
+  xpos -53.66666667
+  ypos 441
+ }
+end_group
