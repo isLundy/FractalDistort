@@ -1,29 +1,38 @@
-#! C:/Program Files/Nuke13.0v9/nuke-13.0.9.dll -nx
+#! C:/Program Files/Nuke13.1v5/nuke-13.1.5.dll -nx
+version 13.1 v5
 Gizmo {
  inputs 2
- knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == \"transformspeed_checkbox\":\n    if n\['transformspeed_checkbox'].getValue() == True:\n        n\['transformspeed'].setEnabled(True)\n        n\['speedx'].setEnabled(True)\n        n\['speedy'].setEnabled(True)\n    else:\n        n\['transformspeed'].setEnabled(False)\n        n\['speedx'].setEnabled(False)\n        n\['speedy'].setEnabled(False)\n"
+ onCreate "n = nuke.thisNode()\nk = nuke.thisKnob()\n\nif n.input(0):\n    n\['Center'].setValue(\[n.input(0).width()/2, n.input(0).height()/2])\nelse:\n    n\['Center'].setValue(\[nuke.root().width()/2, nuke.root().height()/2])"
+ knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == \"speed_checkbox\":\n    if n\['speed_checkbox'].getValue() == True:\n        n\['speed'].setEnabled(True)\n        n\['speedx'].setEnabled(True)\n        n\['speedy'].setEnabled(True)\n        n\['speedrotate'].setEnabled(True)\n        n\['speedscale'].setEnabled(True)\n        n\['Center'].setEnabled(True)\n        n\['speedxrotate'].setEnabled(True)\n        n\['speedyrotate'].setEnabled(True)\n    else:\n        n\['speed'].setEnabled(False)\n        n\['speedx'].setEnabled(False)\n        n\['speedy'].setEnabled(False)\n        n\['speedrotate'].setEnabled(False)\n        n\['speedscale'].setEnabled(False)\n        n\['Center'].setEnabled(False)\n        n\['speedxrotate'].setEnabled(False)\n        n\['speedyrotate'].setEnabled(False)"
  tile_color 0xff5204ff
  note_font_color 0xffffffff
  addUserKnob {20 simpleturbulate l SimpleTurbulate}
  addUserKnob {26 title l " " T "<span style=\"font-size:18px\">SimpleTurbulate <sup>v1.0</sup></span><span style='font-size:32px;'>&#x1F334;</span><b><span style=\"color:#7F7F7F\"> by Lundy Hu</span></b>"}
  addUserKnob {26 fractal l "<b><span style='color:#FF5204'>Fractal</span></b>"}
- addUserKnob {41 size l x/ysize T Noise1.size}
- addUserKnob {41 lacunarity l Detail T Noise1.lacunarity}
+ addUserKnob {14 xy_size l "xy Size" R 1 1000}
+ xy_size 100
+ addUserKnob {7 detail l Detail R 1 10}
+ detail 2
  addUserKnob {7 seed l Seed R 0 5}
- addUserKnob {7 speed l Evolve R 0 0.5}
- speed 0.02
- addUserKnob {26 spacer_2 l "" +STARTLINE T " "}
+ addUserKnob {7 evolve l Evolve R 0 0.5}
+ evolve 0.02
  addUserKnob {26 spacer_1 l "" +STARTLINE T " "}
  addUserKnob {26 distort l "<b><span style='color:#FF5204'>Distort</span></b>"}
  addUserKnob {7 scale l Scale R 0 200}
  scale 50
- addUserKnob {41 size_2 l Smooth T Blur2.size}
+ addUserKnob {7 smooth l Smooth R 0 100}
  addUserKnob {26 spacer_3 l "" +STARTLINE T " "}
  addUserKnob {20 transformspeedtap l "Transform Speed"}
- addUserKnob {6 transformspeed_checkbox l " " +STARTLINE}
- addUserKnob {26 transformspeed l "" -STARTLINE +DISABLED T "Transform Speed"}
+ addUserKnob {6 speed_checkbox l " " +STARTLINE}
+ addUserKnob {26 speed l "" -STARTLINE +DISABLED T Speed}
  addUserKnob {7 speedx l "Speed X" +DISABLED R -50 50}
  addUserKnob {7 speedy l " Speed Y" -STARTLINE +DISABLED R -50 50}
+ addUserKnob {7 speedrotate l "Speed Rotate" +DISABLED R -10 10}
+ addUserKnob {7 speedscale l "Speed Scale" +DISABLED R -0.1 0.1}
+ addUserKnob {12 Center +DISABLED}
+ Center {960 540}
+ addUserKnob {7 speedxrotate l "Speed xrorate" t "Rotation around the x axis in 3D noise space." +DISABLED R -10 10}
+ addUserKnob {7 speedyrotate l "Speed yrotate" t "Rotation around the y axis in 3D noise space." +DISABLED R -10 10}
 }
  Input {
   inputs 0
@@ -48,7 +57,7 @@ Gizmo {
   xpos -19.66666667
   ypos -87.125
  }
-set N9be9ced0 [stack 0]
+set N6b5e1000 [stack 0]
  Reformat {
   inputs 0
   type "to box"
@@ -60,15 +69,21 @@ set N9be9ced0 [stack 0]
   ypos -90.125
  }
  Noise {
-  size 100
-  zoffset {{parent.seed+parent.speed*frame}}
-  translate {{"parent.transformspeed_checkbox == 1? parent.speedx*frame:curve"} {"parent.transformspeed_checkbox == 1? parent.speedy*frame:curve"}}
-  center {{Dot1.width/2} {Dot1.height/2}}
+  size {{parent.xy_size.0} {parent.xy_size.1}}
+  zoffset {{parent.seed+parent.evolve*frame}}
+  lacunarity {{parent.detail}}
+  translate {{"parent.speed_checkbox == 1? parent.speedx*frame:0"} {"parent.speed_checkbox == 1? parent.speedy*frame:0"}}
+  rotate {{"speed_checkbox==1? speedrotate*frame:0"}}
+  scale {{"speed_checkbox==1? 1+speedscale*frame:1"}}
+  center {{parent.Center.0} {parent.Center.1}}
+  xrotate {{"speed_checkbox==1? 30+parent.speedxrotate*frame:30"}}
+  yrotate {{"speed_checkbox==1? 30+speedyrotate*frame:30"}}
   name Noise1
   selected true
   xpos 303
   ypos -14.25
  }
+set N6b5e1c00 [stack 0]
  Grade {
   channels rgba
   white 2
@@ -79,12 +94,13 @@ set N9be9ced0 [stack 0]
   ypos 61.625
  }
  Blur {
+  size {{parent.smooth}}
   name Blur2
   label "\[value size]"
   xpos 303
   ypos 126.5
  }
-push $N9be9ced0
+push $N6b5e1000
  Copy {
   inputs 2
   from0 rgba.red
@@ -125,5 +141,23 @@ push $N9be9ced0
   name Output1
   xpos -53.66666667
   ypos 441
+ }
+ Ramp {
+  inputs 0
+  name Ramp1
+  xpos 148
+  ypos -21
+ }
+push $N6b5e1c00
+push 0
+ Viewer {
+  inputs 2
+  frame 28
+  frame_range 1-50
+  input_number 1
+  name Viewer1
+  tile_color 0x222222ff
+  xpos 413
+  ypos -14
  }
 end_group
