@@ -1,5 +1,4 @@
 #! C:/Program Files/Nuke13.1v5/nuke-13.1.5.dll -nx
-version 13.1 v5
 Gizmo {
  inputs 2
  onCreate "n = nuke.thisNode()\nk = nuke.thisKnob()\n\nif n.input(0):\n    n\['Center'].setValue(\[n.input(0).width()/2, n.input(0).height()/2])\nelse:\n    n\['Center'].setValue(\[nuke.root().width()/2, nuke.root().height()/2])"
