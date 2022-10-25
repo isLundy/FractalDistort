@@ -1,7 +1,7 @@
-#! /opt/PLE/bundle/local/nuke/12.2v6/Linux/libnuke-12.2.6.so -nx
+#! C:/Program Files/Nuke13.1v5/nuke-13.1.5.dll -nx
 Gizmo {
  inputs 2
- onCreate "n = nuke.thisNode()\nk = nuke.thisKnob()\n\nif n.input(0):\n    n\['center'].setValue(\[n.input(0).width()/2, n.input(0).height()/2])\nelse:\n    n\['center'].setValue(\[nuke.root().width()/2, nuke.root().height()/2])"
+ onCreate "n = nuke.thisNode()\nk = nuke.thisKnob()\nn\['mix'].setFlag(0x0000000000000010)\n\nif n.input(0):\n    n\['center'].setValue(\[n.input(0).width()/2, n.input(0).height()/2])\nelse:\n    n\['center'].setValue(\[nuke.root().width()/2, nuke.root().height()/2])"
  tile_color 0xff5204ff
  note_font_color 0xffffffff
  addUserKnob {20 fractaldistort l "Fractal Distort"}
@@ -58,7 +58,7 @@ Gizmo {
   xpos -41
   ypos -189
  }
-set Ncb3f5d00 [stack 0]
+set Ncaf89800 [stack 0]
  Dot {
   name Dot3
   xpos -242
@@ -69,8 +69,8 @@ set Ncb3f5d00 [stack 0]
   xpos -242
   ypos 449
  }
-set Ncb3f4f00 [stack 0]
-push $Ncb3f4f00
+set Ncafb4000 [stack 0]
+push $Ncafb4000
  Reformat {
   inputs 0
   type "to box"
@@ -85,7 +85,7 @@ push $Ncb3f4f00
   size {{parent.xy_size.0} {parent.xy_size.1}}
   zoffset {{parent.seed+parent.evolve*frame}}
   lacunarity {{parent.detail}}
-  center {1024 778}
+  center {960 540}
   name Noise1
   xpos 155
   ypos -117.25
@@ -114,7 +114,7 @@ push $Ncb3f4f00
   ypos 96
   disable {{"parent.effect==1? 0:1"}}
  }
-push $Ncb3f5d00
+push $Ncaf89800
 add_layer {fractal fractal.r fractal.g}
  Copy {
   inputs 2
@@ -155,7 +155,7 @@ add_layer {fractal fractal.r fractal.g}
   ypos 554.6666667
   disable {{"\[exists parent.input1]? 0:1"}}
  }
-set Ncd7f4100 [stack 0]
+set Ncafecc00 [stack 0]
  Shuffle2 {
   fromInput1 {{0} B}
   in1 fractal
@@ -166,7 +166,7 @@ set Ncd7f4100 [stack 0]
   xpos 155
   ypos 554.6666667
  }
-push $Ncd7f4100
+push $Ncafecc00
  Switch {
   inputs 2
   which {{parent.viewoutput}}
