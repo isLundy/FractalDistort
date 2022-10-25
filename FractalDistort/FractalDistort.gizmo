@@ -1,4 +1,4 @@
-#! C:/Program Files/Nuke13.1v5/nuke-13.1.5.dll -nx
+#! /opt/PLE/bundle/local/nuke/12.2v6/Linux/libnuke-12.2.6.so -nx
 Gizmo {
  inputs 2
  onCreate "n = nuke.thisNode()\nk = nuke.thisKnob()\n\nif n.input(0):\n    n\['center'].setValue(\[n.input(0).width()/2, n.input(0).height()/2])\nelse:\n    n\['center'].setValue(\[nuke.root().width()/2, nuke.root().height()/2])"
@@ -58,7 +58,7 @@ Gizmo {
   xpos -41
   ypos -189
  }
-set Nebf1f000 [stack 0]
+set Ncb3f5d00 [stack 0]
  Dot {
   name Dot3
   xpos -242
@@ -69,8 +69,8 @@ set Nebf1f000 [stack 0]
   xpos -242
   ypos 449
  }
-set Nebf1f800 [stack 0]
-push $Nebf1f800
+set Ncb3f4f00 [stack 0]
+push $Ncb3f4f00
  Reformat {
   inputs 0
   type "to box"
@@ -85,7 +85,7 @@ push $Nebf1f800
   size {{parent.xy_size.0} {parent.xy_size.1}}
   zoffset {{parent.seed+parent.evolve*frame}}
   lacunarity {{parent.detail}}
-  center {960 540}
+  center {1024 778}
   name Noise1
   xpos 155
   ypos -117.25
@@ -114,7 +114,7 @@ push $Nebf1f800
   ypos 96
   disable {{"parent.effect==1? 0:1"}}
  }
-push $Nebf1f000
+push $Ncb3f5d00
 add_layer {fractal fractal.r fractal.g}
  Copy {
   inputs 2
@@ -155,7 +155,7 @@ add_layer {fractal fractal.r fractal.g}
   ypos 554.6666667
   disable {{"\[exists parent.input1]? 0:1"}}
  }
-set Nebf7e000 [stack 0]
+set Ncd7f4100 [stack 0]
  Shuffle2 {
   fromInput1 {{0} B}
   in1 fractal
@@ -166,7 +166,7 @@ set Nebf7e000 [stack 0]
   xpos 155
   ypos 554.6666667
  }
-push $Nebf7e000
+push $Ncd7f4100
  Switch {
   inputs 2
   which {{parent.viewoutput}}
